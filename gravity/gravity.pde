@@ -1,7 +1,8 @@
 float x, y;
 float ballSize= 40;
 float xSpeed=5, ySpeed = 5;
-boolean movingUp = false, movingLeft = false;
+float gravity = 0.1;
+float braking = 0.09;
 
 void setup () {
 
@@ -16,26 +17,23 @@ void draw() { //to add gravity, make change in draw part as every slide
   fill(216, 7, 21);
   ellipse(x, y, ballSize, ballSize);
   
-  if (y + ballSize/2 >= height) {
-    movingUp = true;
-  }else if (y - ballSize/2 <= 0) {
-    movingUp = false;
+  y = y + ySpeed;
+  x = x + xSpeed;
+  ySpeed = ySpeed + gravity;
+  
+  if (y + ballSize/2 > height) {
+    ySpeed *= -(1 - braking);
+    
+    y = height -ballSize/2;
   }
   if (x + ballSize/2 >= width) {
-    movingLeft = true;
+    xSpeed*= -(1 - braking);
+    x = width - ballSize/2;
+    
   } else if (x - ballSize/2 <= 0) {
-    movingLeft = false;
-  }
-  
-  if (movingUp) {
-    y = y - ySpeed;
-  } else {
-    y = y + xSpeed;
-  }
-  
-  if (movingLeft) {
-    x = x + xSpeed;
-  } else {
-    x = x + xSpeed;
+    
+    xSpeed *= -(1 - braking);
+    x = ballSize/2;
   }
 }
+  
